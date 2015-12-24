@@ -3,7 +3,7 @@ const graphql = Npm.require('graphql');
 GraphQL = {
   types: {},
   _schemas: {},
-  registerSchema: (name, schema) => {
+  registerSchema(name, schema) {
     if(this._schemas[name]) {
       throw new Error(`Schema with name "${name}" already exists.`);
     }

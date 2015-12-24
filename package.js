@@ -17,6 +17,10 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   configure(api);
+  api.use('smithy:describe@1.0.1');
+  api.use('random');
+
+  api.addFiles('server/__tests__/graphql.js', 'server');
 });
 
 function configure(api) {
