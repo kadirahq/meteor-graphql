@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your GraphQL Schema</title>
+</head>
+<body>
+  <h2>Your GraphQL Schema</h2>
+  <p>
+    Click following links to play with your Schema.
+  </p>
+  <div>
+    <ul>
+    <% schemas.forEach(function(schema) { %>
+      <li>
+        <a href="/graphql/ide?schema=<%=schema.name%>"><%=schema.name %></a>
+      </li>
+    <% }) %>
+    </ul>
+  </div>
+</body>
+</html>

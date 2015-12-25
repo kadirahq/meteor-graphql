@@ -7,7 +7,9 @@ Package.describe({
 
 Npm.depends({
   'graphql': '0.4.14',
-  'lokka': '1.3.1'
+  'lokka': '1.3.1',
+  'body-parser': '1.14.2',
+  'express-graphql': '0.4.5'
 });
 
 Package.onUse(function(api) {
@@ -29,7 +31,13 @@ function configure(api) {
   api.versionsFrom('1.0');
   api.use('ecmascript');
   api.use('check');
+  api.use('underscore');
+  api.use('meteorhacks:picker@1.0.3');
+  api.use('kadira:runtime-dev@0.0.1');
 
   api.addFiles('server/graphql.js', 'server');
   api.addFiles('server/transport.js', 'server');
+  api.addFiles('server/render_ide.js', 'server');
+  api.addFiles('server/ide.js', 'server');
+  api.addFiles('assets/schema_list.html', 'server', {isAsset: true});
 }
