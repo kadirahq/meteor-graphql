@@ -6,7 +6,7 @@ Meteor.methods({
     check(schemaName, String);
     check(query, String);
     check(vars, Match.OneOf(Object, undefined, null));
-    check(operationName, Match.Optional(String));
+    check(operationName, Match.OneOf(String, undefined, null));
 
     const schema = GraphQL._schemas[schemaName];
     if(!schema) {

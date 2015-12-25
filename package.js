@@ -19,12 +19,15 @@ Package.onUse(function(api) {
 
 Package.onTest(function(api) {
   configure(api);
-  api.use('smithy:describe@1.0.1');
+  api.use('smithy:describe@1.0.1', ['server', 'client']);
   api.use('random');
   api.use('ddp');
 
+  api.addFiles('__tests__/init.js', 'server');
   api.addFiles('server/__tests__/graphql.js', 'server');
-  api.addFiles('server/__tests__/transport.js', 'server');
+  api.addFiles('server/__tests__/lokka_transport.js', 'server');
+
+  api.addFiles('client/__tests__/lokka_transport.js', 'client');
 });
 
 function configure(api) {
@@ -36,9 +39,12 @@ function configure(api) {
   api.use('kadira:runtime-dev@0.0.1');
 
   api.addFiles('server/graphql.js', 'server');
-  api.addFiles('server/transport.js', 'server');
+  api.addFiles('server/lokka_transport.js', 'server');
   api.addFiles('server/render_ide.js', 'server');
   api.addFiles('server/ide.js', 'server');
   api.addFiles('server/sample_schema.js', 'server');
   api.addFiles('assets/schema_list.html', 'server', {isAsset: true});
+
+  api.addFiles('client/lokka_transport.js', 'client');
+  api.addFiles('client/graphql.js', 'client');
 }

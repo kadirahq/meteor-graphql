@@ -1,40 +1,4 @@
-const {
-  GraphQLSchema,
-  GraphQLObjectType,
-  GraphQLInt,
-  GraphQLString
-} = GraphQL.types;
-
 describe('Server Side Transport', () => {
-  const schemaName = Random.id();
-  before(() => {
-    const schema = new GraphQLSchema({
-      query: new GraphQLObjectType({
-        name: 'Query',
-        fields: {
-          "sum": {
-            type: GraphQLInt,
-            args: {
-              a: {type: GraphQLInt},
-              b: {type: GraphQLInt}
-            },
-            resolve(parent, {a, b}) {
-              return a + b;
-            }
-          },
-          "userId": {
-            type: GraphQLString,
-            resolve(parent, args, {rootValue}) {
-              return rootValue.userId;
-            }
-          }
-        }
-      })
-    });
-
-    GraphQL.registerSchema(schemaName, schema);
-  });
-
   it('should throw an error if there is no such schema', done => {
     const run = () => {
       Meteor.call('graphql.transport', 'some-other-query', '{sum(a: 10, b: 20)}');    
@@ -50,7 +14,7 @@ describe('Server Side Transport', () => {
         sum(a: 10, b: 20)
       }
     `;
-    const result = Meteor.call('graphql.transport', schemaName, query);
+    const result = Meteor.call('graphql.transport', 'test-schema', query);
     expect(result.data).to.deep.equal({sum: 30});
     done();
   });
@@ -63,7 +27,7 @@ describe('Server Side Transport', () => {
     `;
     const queryVariables = {a: 50};
     const result = Meteor.call(
-      'graphql.transport', schemaName, query, queryVariables
+      'graphql.transport', 'test-schema', query, queryVariables
     );
     
     expect(result.data).to.deep.equal({sum: 70});
@@ -81,7 +45,7 @@ describe('Server Side Transport', () => {
       }
     `;
     const result = Meteor.call(
-      'graphql.transport', schemaName, query, null, 'adding2'
+      'graphql.transport', 'test-schema', query, null, 'adding2'
     );
     
     expect(result.data).to.deep.equal({sum: 40});
@@ -93,7 +57,7 @@ describe('Server Side Transport', () => {
       ssds
     `;
     const result = Meteor.call(
-      'graphql.transport', schemaName, query
+      'graphql.transport', 'test-schema', query
     );
 
     expect(result.errors[0].message).to.match(/Syntax Error/);
@@ -109,7 +73,7 @@ describe('Server Side Transport', () => {
 
     const fakeUserId = Random.id();
     DDP._CurrentInvocation.withValue({userId: fakeUserId}, () => {
-      const result = Meteor.call('graphql.transport', schemaName, query);
+      const result = Meteor.call('graphql.transport', 'test-schema', query);
       expect(result.data).to.deep.equal({userId: fakeUserId});
       done();
     });
