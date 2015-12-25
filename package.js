@@ -39,5 +39,6 @@ function configure(api) {
   api.addFiles('server/transport.js', 'server');
   api.addFiles('server/render_ide.js', 'server');
   api.addFiles('server/ide.js', 'server');
+  api.addFiles('server/sample_schema.js', 'server');
   api.addFiles('assets/schema_list.html', 'server', {isAsset: true});
 }
