@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Your GraphQL Schema</title>
+  <title>GraphQL Schemas</title>
+  <style type="text/css">
+    body {
+      font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif;
+      padding: 0 20px;
+      border-top: 10px solid #5BC6FF;
+      margin: 0;
+    }
+
+    .heading {
+      margin-top: 50px;
+    }
+
+    .list li {
+      margin-bottom: 8px;
+    }
+
+    .list li a {
+      text-decoration: none;
+    }
+
+    .descriptions {
+      color: #5C5C5C;
+    }
+  </style>
 </head>
 <body>
-  <h2>Your GraphQL Schema</h2>
-  <p>
-    Click following links to play with your Schema.
+  <h1 class="heading">Available GraphQL Schemas</h1>
+  <p class="description">
+    Click following links to launch the <b>GraphQL IDE</b> for each schema.
   </p>
-  <div>
+  <div class="list">
     <ul>
     <% schemas.forEach(function(schema) { %>
       <li>
