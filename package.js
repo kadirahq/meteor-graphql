@@ -28,6 +28,7 @@ Package.onTest(function(api) {
   api.addFiles('server/__tests__/lokka_transport.js', 'server');
 
   api.addFiles('client/__tests__/lokka_transport.js', 'client');
+  api.addFiles('client/__tests__/graphql.js', 'client');
 });
 
 function configure(api) {
@@ -37,6 +38,7 @@ function configure(api) {
   api.use('underscore');
   api.use('meteorhacks:picker@1.0.3');
   api.use('kadira:runtime-dev@0.0.1');
+  api.use('cosmos:browserify@0.9.3', 'client');
 
   api.addFiles('server/graphql.js', 'server');
   api.addFiles('server/lokka_transport.js', 'server');
@@ -45,6 +47,7 @@ function configure(api) {
   api.addFiles('server/sample_schema.js', 'server');
   api.addFiles('assets/schema_list.html', 'server', {isAsset: true});
 
+  api.addFiles('client/lokka.browserify.js', 'client');
   api.addFiles('client/lokka_transport.js', 'client');
   api.addFiles('client/graphql.js', 'client');
 }
