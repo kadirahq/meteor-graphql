@@ -22,16 +22,24 @@ Picker.route('/graphql/ide', (params, req, res) => {
     const html = RenderIde({query, variables});
     res.end(html);
   } else {
-    const {query, variables, operationName} = req.body;
-    const schemaName = params.query.schema;
-    const response = Meteor.call(
-      'graphql.transport', schemaName, query, variables, operationName
-    );
+    try {
+      const {query, variables = '{}', operationName} = req.body;
+      const variablesJson = JSON.parse(variables);
+      const schemaName = params.query.schema;
 
-    const json = JSON.stringify(response);
-    res.writeHead(200, {
-      'Content-Type': 'application/json'
-    });
-    res.end(json);
+      const response = Meteor.call(
+        'graphql.transport', schemaName, query, variablesJson, operationName
+      );
+
+      const json = JSON.stringify(response);
+      res.writeHead(200, {
+        'Content-Type': 'application/json'
+      });
+      res.end(json);
+    } catch(ex) {
+      console.error(ex.stack);
+      res.writeHead(500);
+      res.end("Internal Error");
+    }
   }
 });
