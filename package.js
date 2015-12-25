@@ -19,14 +19,17 @@ Package.onTest(function(api) {
   configure(api);
   api.use('smithy:describe@1.0.1');
   api.use('random');
+  api.use('ddp');
 
   api.addFiles('server/__tests__/graphql.js', 'server');
+  api.addFiles('server/__tests__/transport.js', 'server');
 });
 
 function configure(api) {
   api.versionsFrom('1.0');
   api.use('ecmascript');
   api.use('check');
+
   api.addFiles('server/graphql.js', 'server');
   api.addFiles('server/transport.js', 'server');
 }
