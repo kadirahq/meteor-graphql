@@ -1,5 +1,5 @@
 const DefaultErrorComponent = ({error}) => (
-  <pre>
+  <pre style={{color: 'red'}}>
     {error.stack}
   </pre>
 );
@@ -13,7 +13,13 @@ GraphQL.bindData = (fn) => {
       constructor(props, context) {
         super(props, context);
         let fnState = {};
-        const stop = fn(props, s => fnState = s);
+        const stop = fn(props, (error, payload) => {
+          if(err) {
+            return fnState = {error}
+          }
+
+          fnState = payload;
+        });
         if (stop) {
           stop();
         }
@@ -34,21 +40,34 @@ GraphQL.bindData = (fn) => {
           this.stop();
         }
 
-        this.stop = fn(props, s => {
-          const defaultState = {data: null, error: null};
-          this.setState(Object.assign({}, defaultState, s));
+        this.stop = fn(props, (error, payload) => {
+          const defaultState = {data: null, error: error};
+          this.setState(Object.assign({}, defaultState, payload));
         });
       }
 
       render() {
         const {data, error} = this.state;
+        const state = this.state;
+        
         return (
           <div>
-            {error? <ErrorComponent error={error}/> : null}
-            {data? <DataComponent data={data} /> : null}
-            {(!data && !error)? <LoadingComponent /> : null}
+            {error? <ErrorComponent error={error}/> : null }
+            {this._isLoading()? <LoadingComponent /> : null}
+            {(!this._isLoading() && !error)? <DataComponent {...state} /> : null}
           </div>
         );
+      }
+
+      _isLoading() {
+        const keys = Object.keys(this.state);
+        for(key of keys) {
+          if(this.state[key]) {
+            return false;
+          }
+        }
+
+        return true;
       }
     }
   };
