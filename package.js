@@ -7,7 +7,7 @@ Package.describe({
 
 Npm.depends({
   'graphql': '0.4.14',
-  'lokka': '1.3.1',
+  'lokka': '1.5.0',
   'body-parser': '1.14.2',
   'express-graphql': '0.4.5'
 });
@@ -32,10 +32,11 @@ Package.onTest(function(api) {
 });
 
 function configure(api) {
-  api.versionsFrom('1.0');
+  api.versionsFrom('1.2');
   api.use('ecmascript');
   api.use('check');
   api.use('underscore');
+  api.use('react');
   api.use('meteorhacks:picker@1.0.3');
   api.use('kadira:runtime-dev@0.0.1');
   api.use('cosmos:browserify@0.9.3', 'client');
@@ -50,4 +51,5 @@ function configure(api) {
   api.addFiles('client/lokka.browserify.js', 'client');
   api.addFiles('client/lokka_transport.js', 'client');
   api.addFiles('client/graphql.js', 'client');
+  api.addFiles('client/bind_data.jsx', 'client');
 }
