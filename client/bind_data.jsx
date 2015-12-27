@@ -14,7 +14,7 @@ GraphQL.bindData = (fn) => {
         super(props, context);
         let fnState = {};
         const stop = fn(props, (error, payload) => {
-          if(err) {
+          if(error) {
             return fnState = {error}
           }
 
@@ -49,7 +49,7 @@ GraphQL.bindData = (fn) => {
       render() {
         const {data, error} = this.state;
         const state = this.state;
-        
+
         return (
           <div>
             {error? <ErrorComponent error={error}/> : null }
