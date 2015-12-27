@@ -7,7 +7,7 @@ Package.describe({
 
 Npm.depends({
   'graphql': '0.4.14',
-  'lokka': '1.5.0',
+  'lokka': '1.6.0',
   'body-parser': '1.14.2',
   'express-graphql': '0.4.5'
 });
