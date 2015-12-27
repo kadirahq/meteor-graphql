@@ -35,6 +35,12 @@ GraphQL.bindData = (fn) => {
         this._runFn(props);
       }
 
+      componentWillUnmount() {
+        if(this.stop) {
+          this.stop();
+        }
+      }
+
       _runFn(props) {
         if(this.stop) {
           this.stop();
