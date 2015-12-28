@@ -28,6 +28,7 @@ Refer this guide to get started with GraphQL inside Meteor.
 * In Browser GraphQL IDE while development.
 * Seamless client side integration with Lokka.
 * React utilities.
+* [Meteor based Authorization](#authorization)
 * Optimistic Updates support (via Lokka).
 * Client Side Caching (via Lokka).
 * Declarative Data Definition (via Lokka).
@@ -52,6 +53,12 @@ const schema = new GraphQLSchema({
 
 GraphQL.registerSchema('Blog', schema);
 ```
+
+#### Authorization
+
+GraphQL uses Meteor methods as the transport layer. So, we can get the Meteor userId inside the GraphQL schema with the `rootValue` to the schema.
+
+See how to [use it](https://goo.gl/HK59qT) inside a schema.
 
 #### GraphQL.createLokkaClient() [client only]
 
