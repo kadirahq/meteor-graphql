@@ -4,9 +4,13 @@ const DefaultErrorComponent = ({error}) => (
   </pre>
 );
 
+const DefaultLoadingComponent = () => (
+  <p>Loading...</p>
+);
+
 GraphQL.bindData = (fn) => {
   return (DataComponent, L, E) => {
-    const LoadingComponent = L || () => (<p>Loading...</p>);
+    const LoadingComponent = L || DefaultLoadingComponent;
     const ErrorComponent = E || DefaultErrorComponent;
 
     return class extends React.Component {
