@@ -32,11 +32,10 @@ Package.onTest(function(api) {
 });
 
 function configure(api) {
-  api.versionsFrom('1.2');
-  api.use('ecmascript');
-  api.use('check');
-  api.use('underscore');
-  api.use('react');
+  api.use('ecmascript@0.1.6');
+  api.use('check@1.1.0');
+  api.use('underscore@1.0.4', 'server');
+  api.use('react@0.14.3');
   api.use('meteorhacks:picker@1.0.3');
   api.use('kadira:runtime-dev@0.0.1');
   api.use('cosmos:browserify@0.9.3', 'client');
