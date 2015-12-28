@@ -24,7 +24,15 @@ Refer this guide to get started with GraphQL inside Meteor.
 
 ### Features
 
-## API
+* Register multiple GraphQL schemas.
+* In Browser GraphQL IDE while development.
+* Seamless client side integration with Lokka.
+* React utilities.
+* Optimistic Updates support (via Lokka).
+* Client Side Caching (via Lokka).
+* Declarative Data Definition (via Lokka).
+
+### API
 
 GraphQL Meteor intergration comes with few simple APIs. Let's explore them:
 
