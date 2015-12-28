@@ -1,5 +1,6 @@
 const DefaultErrorComponent = ({error}) => (
   <pre style={{color: 'red'}}>
+    {error.message} <br />
     {error.stack}
   </pre>
 );
