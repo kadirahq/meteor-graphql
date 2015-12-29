@@ -20,7 +20,7 @@ Then visit <http://localhost:3000/graphql> to see all the schemas available in y
 
 ### Getting Started
 
-Refer this guide to get started with GraphQL inside Meteor.
+Refer [this guide](https://voice.kadira.io/meteor-meets-graphql-3cba2e65fd00#.szh1gnuhm) to get started with GraphQL inside Meteor.
 
 ### Features
 
