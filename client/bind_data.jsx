@@ -10,11 +10,11 @@ const DefaultLoadingComponent = () => (
 );
 
 GraphQL.bindData = (fn) => {
-  return (DataComponent, L, E) => {
+  return (ChildComponent, L, E) => {
     const LoadingComponent = L || DefaultLoadingComponent;
     const ErrorComponent = E || DefaultErrorComponent;
 
-    return class extends React.Component {
+    const Container = class extends React.Component {
       constructor(props, context) {
         super(props, context);
 
@@ -45,7 +45,7 @@ GraphQL.bindData = (fn) => {
           <div>
             {error? <ErrorComponent error={error}/> : null }
             {(!error && loading)? <LoadingComponent /> : null}
-            {(!error && !loading)? <DataComponent {...this._getProps()} /> : null}
+            {(!error && !loading)? <ChildComponent {...this._getProps()} /> : null}
           </div>
         );
       }
@@ -97,6 +97,17 @@ GraphQL.bindData = (fn) => {
         const {_fnData} = this.state;
         return !_fnData.payload;
       }
-    }
+    };
+
+    const childDisplayName = 
+      // Get the display name if it's set.
+      ChildComponent.displayName || 
+      // Get the display name from the function name.
+      ChildComponent.name || 
+      // If not, just add a default one.
+      'ChildComponent';
+
+    Container.displayName = `Container(${childDisplayName})`
+    return Container;
   };
 };
