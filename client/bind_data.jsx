@@ -18,6 +18,7 @@ GraphQL.bindData = (fn) => {
       constructor(props, context) {
         super(props, context);
 
+        this.state = {_fnData: {}};
         this._subscribe(props);
         // XXX: In the server side environment, we need to 
         // stop the subscription right away. Otherwise, it's a starting
@@ -36,12 +37,25 @@ GraphQL.bindData = (fn) => {
         this._unsubscribe();
       }
 
+      render() {
+        const error = this._getError();
+        const loading = this._isLoading();
+
+        return (
+          <div>
+            {error? <ErrorComponent error={error}/> : null }
+            {(!error && loading)? <LoadingComponent /> : null}
+            {(!error && !loading)? <DataComponent {...this._getProps()} /> : null}
+          </div>
+        );
+      }
+
       _subscribe(props) {
         this._unsubscribe();
 
         this._stop = fn(props, (error, payload) => {
           const state = {
-            _data: {error, payload}
+            _fnData: {error, payload}
           };
 
           if(this._mounted) {
@@ -58,25 +72,12 @@ GraphQL.bindData = (fn) => {
         }
       }
 
-      render() {
-        const error = this._getError();
-        const loading = this._isLoading();
-
-        return (
-          <div>
-            {error? <ErrorComponent error={error}/> : null }
-            {(!error && loading)? <LoadingComponent /> : null}
-            {(!error && !loading)? <DataComponent {...this._getProps()} /> : null}
-          </div>
-        );
-      }
-
       _getProps() {
-        const {_data={}} = this.state || {};
+        const {_fnData} = this.state;
         const {
           payload={},
           error
-        } = _data;
+        } = _fnData;
 
         const props = {
           ...this.props,
@@ -88,21 +89,13 @@ GraphQL.bindData = (fn) => {
       }
 
       _getError() {
-        if (!this.state) {
-          return null;
-        }
-
-        const {_data} = this.state;
-        return _data.error;
+        const {_fnData} = this.state;
+        return _fnData.error;
       }
 
       _isLoading() {
-        if (!this.state) {
-          return true;
-        }
-
-        const {_data} = this.state;
-        return !_data.payload;
+        const {_fnData} = this.state;
+        return !_fnData.payload;
       }
     }
   };
