@@ -1,4 +1,4 @@
-## GraphQL Support for Meteor with Lokka 
+## GraphQL Support for Meteor with [Lokka](https://github.com/kadirahq/lokka)
 
 This is an alternative data layer for Meteor with GraphQL. Basically, it'll allow you to expose GraphQL schemas to the client.
 
@@ -20,7 +20,7 @@ Then visit <http://localhost:3000/graphql> to see all the schemas available in y
 
 ### Getting Started
 
-Refer this guide to get started with GraphQL inside Meteor.
+Refer [this guide](https://voice.kadira.io/meteor-meets-graphql-3cba2e65fd00#.szh1gnuhm) to get started with GraphQL inside Meteor.
 
 ### Features
 
