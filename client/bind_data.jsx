@@ -17,68 +17,92 @@ GraphQL.bindData = (fn) => {
     return class extends React.Component {
       constructor(props, context) {
         super(props, context);
-        let fnState = {};
-        const stop = fn(props, (error, payload) => {
-          if(error) {
-            return fnState = {error}
-          }
 
-          fnState = payload;
-        });
-        if (stop) {
-          stop();
-        }
-
-        this.state = fnState;
+        this._subscribe(props);
+        // XXX: In the server side environment, we need to 
+        // stop the subscription right away. Otherwise, it's a starting
+        // point to huge subscription leak.
       }
 
       componentDidMount() {
-        this._runFn(this.props);
+        this._mounted = true;
       }
 
       componentWillReceiveProps(props) {
-        this._runFn(props);
+        this._subscribe(props);
       }
 
       componentWillUnmount() {
-        if(this.stop) {
-          this.stop();
-        }
+        this._unsubscribe();
       }
 
-      _runFn(props) {
-        if(this.stop) {
-          this.stop();
-        }
+      _subscribe(props) {
+        this._unsubscribe();
 
-        this.stop = fn(props, (error, payload) => {
-          const defaultState = {data: null, error: error};
-          this.setState(Object.assign({}, defaultState, payload));
+        this._stop = fn(props, (error, payload) => {
+          const state = {
+            _data: {error, payload}
+          };
+
+          if(this._mounted) {
+            this.setState(state);
+          } else {
+            this.state = state;
+          }
         });
       }
 
+      _unsubscribe() {
+        if(this._stop) {
+          this._stop();
+        }
+      }
+
       render() {
-        const {data, error} = this.state;
-        const state = this.state;
+        const error = this._getError();
+        const loading = this._isLoading();
 
         return (
           <div>
             {error? <ErrorComponent error={error}/> : null }
-            {this._isLoading()? <LoadingComponent /> : null}
-            {(!this._isLoading() && !error)? <DataComponent {...state} /> : null}
+            {(!error && loading)? <LoadingComponent /> : null}
+            {(!error && !loading)? <DataComponent {...this._getProps()} /> : null}
           </div>
         );
       }
 
-      _isLoading() {
-        const keys = Object.keys(this.state);
-        for(key of keys) {
-          if(this.state[key]) {
-            return false;
-          }
+      _getProps() {
+        const {_data={}} = this.state || {};
+        const {
+          payload={},
+          error
+        } = _data;
+
+        const props = {
+          ...this.props,
+          ...payload,
+          error
+        };
+
+        return props;
+      }
+
+      _getError() {
+        if (!this.state) {
+          return null;
         }
 
-        return true;
+        const {_data} = this.state;
+        return _data.error;
+      }
+
+      _isLoading() {
+        if (!this.state) {
+          return true;
+        }
+
+        const {_data} = this.state;
+        return !_data.payload;
       }
     }
   };
