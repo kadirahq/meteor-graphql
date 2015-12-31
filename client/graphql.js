@@ -4,5 +4,6 @@ GraphQL = {
       transport: new LokkaTransport(schemaName)
     });
     return client;
-  }
+  },
+  bindData
 };

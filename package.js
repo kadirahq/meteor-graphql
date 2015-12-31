@@ -9,7 +9,9 @@ Npm.depends({
   'graphql': '0.4.14',
   'lokka': '1.6.0',
   'body-parser': '1.14.2',
-  'express-graphql': '0.4.5'
+  'express-graphql': '0.4.5',
+  'react-data-binder': '1.0.0',
+  'externalify': '0.1.0'
 });
 
 Package.onUse(function(api) {
@@ -47,8 +49,7 @@ function configure(api) {
   api.addFiles('server/sample_schema.js', 'server');
   api.addFiles('assets/schema_list.html', 'server', {isAsset: true});
 
-  api.addFiles('client/lokka.browserify.js', 'client');
+  api.addFiles('client/client.browserify.js', 'client');
   api.addFiles('client/lokka_transport.js', 'client');
   api.addFiles('client/graphql.js', 'client');
-  api.addFiles('client/bind_data.jsx', 'client');
 }

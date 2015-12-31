@@ -1,1 +1,0 @@
-Lokka = require('lokka').Lokka;
