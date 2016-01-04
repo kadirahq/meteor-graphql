@@ -95,7 +95,24 @@ describe('Server Side API', () => {
       });
     });
 
-    it('should mask all other error types', done => {
+    it('should mask all other error types on the same fiber', done => {
+      const f1 = {resolve() { throw new Error('secret error'); }};
+      const t1 = {getFields() { return {f1} }};
+      const s1 = {getTypeMap() { return {t1} }};
+
+      const name = Random.id();
+      GraphQL.registerSchema(name, s1);
+
+      const out = s1.getTypeMap().t1.getFields().f1.resolve();
+      Promise.resolve(out).then(res => {
+        done(new Error('should throw error'));
+      }).catch(err => {
+        expect(err.message).to.equal('Internal Error');
+        done();
+      }).catch(done);
+    });
+
+    it('should mask all other error types with a new fiber', done => {
       const f1 = {resolve() { throw new Error('secret error'); }};
       const t1 = {getFields() { return {f1} }};
       const s1 = {getTypeMap() { return {t1} }};

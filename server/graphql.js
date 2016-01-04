@@ -27,16 +27,18 @@ GraphQL = {
 
         // wrap the resolve function with a Fiber
         const resolveFiber = function (...args) {
-          // Do not create another Fiber if the field.resolve function
-          // is called within a Fiber. Using `Fiber.current` to check.
-          if (Fiber.current) {
-            return resolveFn.call(this, ...args);
-          }
-
           // It's not possible to run a function inside a new Fiber
           // and return the result of it. But we can return a promise.
           return new Promise((resolve, reject) => {
-            Fiber(() => {
+            // Do not create another Fiber if the field.resolve function
+            // is called within a Fiber. Using `Fiber.current` to check.
+            if (Fiber.current) {
+              doProcess();
+            } else {
+              Fiber(doProcess).run();
+            }
+
+            function doProcess() {
               try {
                 // Output of the resolve function may or may not be a Promise.
                 // Use `Promise.resolve(...)` to get a Promise and use it to
@@ -46,27 +48,37 @@ GraphQL = {
               } catch (e) {
                 reject(e);
               }
-            }).run();
+            }
           });
         };
 
         // Only send Meteor.Error to user
         field.resolve = function (...args) {
-          const out = resolveFiber.call(this, ...args);
-          return Promise.resolve(out).catch(err => {
-            if (!(err instanceof Meteor.Error)) {
-              console.error(err && err.stack || err);
-              err.message = '[Internal Error]';
-            }
-
-            throw err;
-          });
+          try {
+            const out = resolveFiber.call(this, ...args);
+            return Promise.resolve(out).catch(err => {
+              const maskedError = GraphQL._maskErrorIfNeeded(err);
+              throw maskedError;
+            });
+          } catch(err) {
+            const maskedError = GraphQL._maskErrorIfNeeded(err);
+            throw maskedError;
+          }
         };
       }
     }
 
     this._schemas[name] = schema;
   }
+};
+
+GraphQL._maskErrorIfNeeded = (sourceError) => {
+  if (!(sourceError instanceof Meteor.Error)) {
+    console.error(sourceError && sourceError.stack || sourceError);
+    return new Error('Internal Error');
+  }
+
+  return sourceError;
 };
 
 Object.keys(graphql).forEach(type => {
