@@ -24,7 +24,9 @@ GraphQL = {
         }
 
         const resolveFn = field.resolve;
-        field.resolve = function (...args) {
+
+        // wrap the resolve function with a Fiber
+        const resolveFiber = function (...args) {
           // Do not create another Fiber if the field.resolve function
           // is called within a Fiber. Using `Fiber.current` to check.
           if (Fiber.current) {
@@ -45,6 +47,19 @@ GraphQL = {
                 reject(e);
               }
             }).run();
+          });
+        };
+
+        // Only send Meteor.Error to user
+        field.resolve = function (...args) {
+          const out = resolveFiber.call(this, ...args);
+          return Promise.resolve(out).catch(err => {
+            if (!(err instanceof Meteor.Error)) {
+              console.error(err && err.stack || err);
+              err.message = '[Internal Error]';
+            }
+
+            throw err;
           });
         };
       }
