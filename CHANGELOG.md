@@ -1,5 +1,10 @@
 # Change Log
 
+### v1.2.3
+
+* Implement error masking. So, we won't expose any internal errors to 
+the client. But, we make an excuse for Meteor.Error
+
 ### v1.2.2
 
 * Get GraphQL.bindData directly from `react-data-binder` package.
