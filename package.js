@@ -1,7 +1,7 @@
 Package.describe({
   name: 'kadira:graphql',
   summary: 'GraphQL support for Meteor with Lokka',
-  version: '1.2.3',
+  version: '1.2.4',
   git: 'https://github.com/kadirahq/meteor-graphql.git'
 });
 

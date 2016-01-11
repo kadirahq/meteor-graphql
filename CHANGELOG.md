@@ -1,5 +1,8 @@
 # Change Log
 
+### v1.2.4
+* Allow IDE transport to work properly, even query variables are null
+
 ### v1.2.3
 
 * Implement error masking. So, we won't expose any internal errors to 
