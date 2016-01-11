@@ -23,8 +23,8 @@ Picker.route('/graphql/ide', (params, req, res) => {
     res.end(html);
   } else {
     try {
-      const {query, variables = '{}', operationName} = req.body;
-      const variablesJson = JSON.parse(variables);
+      const {query, variables, operationName} = req.body;
+      const variablesJson = (variables) ? JSON.parse(variables) : {};
       const schemaName = params.query.schema;
 
       const response = Meteor.call(
