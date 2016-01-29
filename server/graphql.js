@@ -1,5 +1,6 @@
 const Fiber = Npm.require('fibers');
 const graphql = Npm.require('graphql');
+const Lokka = Npm.require('lokka').Lokka;
 
 GraphQL = {
   types: {},
@@ -69,6 +70,19 @@ GraphQL = {
     }
 
     this._schemas[name] = schema;
+  },
+  createLokkaClient(schemaName, ddpObj) {
+    if (!!ddpObj) {
+        const client = new Lokka({
+          transport: new LokkaTransport(schemaName, ddpObj)
+        });
+        return client;
+    } else {
+        const client = new Lokka({
+          transport: new LokkaTransport(schemaName, ddpObj)
+        });
+        return client;
+    }
   }
 };
 
