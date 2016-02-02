@@ -56,7 +56,7 @@ GraphQL.registerSchema('Blog', schema);
 
 #### GraphQL.createLokkaClient() [server only]
 
-This API allows you to create a [Lokka](https://github.com/kadirahq/lokka) client. Then you can use it to interact with your schema. You can add specify ddp connection object, then you can query what meteor-graphql server you want.
+This API allows you to create a [Lokka](https://github.com/kadirahq/lokka) client. Then you can use it to interact with your schema. You can specify ddp connection, so you're able to query any meteor-graphql server you want.
 
 ```js
 var ddpInstance = DDP.connect('http://localhost:3000/');
