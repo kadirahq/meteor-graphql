@@ -72,17 +72,10 @@ GraphQL = {
     this._schemas[name] = schema;
   },
   createLokkaClient(schemaName, ddpObj) {
-    if (!!ddpObj) {
-        const client = new Lokka({
-          transport: new LokkaTransport(schemaName, ddpObj)
-        });
-        return client;
-    } else {
-        const client = new Lokka({
-          transport: new LokkaTransport(schemaName)
-        });
-        return client;
-    }
+    const client = new Lokka({
+      transport: new LokkaTransport(schemaName, ddpObj || undefined)
+    });
+    return client;
   }
 };
 
