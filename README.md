@@ -54,6 +54,15 @@ const schema = new GraphQLSchema({
 GraphQL.registerSchema('Blog', schema);
 ```
 
+#### GraphQL.createLokkaClient() [server only]
+
+This API allows you to create a [Lokka](https://github.com/kadirahq/lokka) client. Then you can use it to interact with your schema. You can specify ddp connection, so you're able to query any meteor-graphql server you want.
+
+```js
+var ddpInstance = DDP.connect('http://localhost:3000/');
+BlogSchema = GraphQL.createLokkaClient('Blog', ddpInstance);
+```
+
 #### Authorization
 
 GraphQL uses Meteor methods as the transport layer. So, we can get the Meteor userId inside the GraphQL schema with the `rootValue` to the schema.
@@ -100,7 +109,7 @@ const onPropsChange = ((props, onData) => {
     }
 
     // send data like this
-    //  if there's in an error, 
+    //  if there's in an error,
     //  send an Error object instead null
     onData(null, {time, text});
   }, 1000);
@@ -110,7 +119,7 @@ const onPropsChange = ((props, onData) => {
     clearInterval(handler);
   }
 
-  // return the stop function which called when 
+  // return the stop function which called when
   // the component getting destroyed.
   return stop;
 });
@@ -123,7 +132,7 @@ Then we can render our clock like this:
 ```js
 ReactDOM.render((
     <div>
-      <Clock /> 
+      <Clock />
       <Clock timestamp={true} />
     </div>
   ), document.body);
