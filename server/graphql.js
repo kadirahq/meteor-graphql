@@ -79,7 +79,7 @@ GraphQL = {
         return client;
     } else {
         const client = new Lokka({
-          transport: new LokkaTransport(schemaName, ddpObj)
+          transport: new LokkaTransport(schemaName)
         });
         return client;
     }
